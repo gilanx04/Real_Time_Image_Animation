@@ -134,32 +134,32 @@ class Visualizer:
     def visualize(self, driving, source, out):
         images = []
 
-        # Source image with keypoints
+        # Source images with keypoints
         source = source.data.cpu()
         kp_source = out['kp_source']['value'].data.cpu().numpy()
         source = np.transpose(source, [0, 2, 3, 1])
         images.append((source, kp_source))
 
-        # Equivariance visualization
+        # Equivariance visualizations
         if 'transformed_frame' in out:
             transformed = out['transformed_frame'].data.cpu().numpy()
             transformed = np.transpose(transformed, [0, 2, 3, 1])
             transformed_kp = out['transformed_kp']['value'].data.cpu().numpy()
             images.append((transformed, transformed_kp))
 
-        # Driving image with keypoints
+        # Driving images with keypoints
         kp_driving = out['kp_driving']['value'].data.cpu().numpy()
         driving = driving.data.cpu().numpy()
         driving = np.transpose(driving, [0, 2, 3, 1])
         images.append((driving, kp_driving))
 
-        # Deformed image
+        # Deformed images
         if 'deformed' in out:
             deformed = out['deformed'].data.cpu().numpy()
             deformed = np.transpose(deformed, [0, 2, 3, 1])
             images.append(deformed)
 
-        # Result with and without keypoints
+        # Result with and without keypoint
         prediction = out['prediction'].data.cpu().numpy()
         prediction = np.transpose(prediction, [0, 2, 3, 1])
         if 'kp_norm' in out:
@@ -168,7 +168,7 @@ class Visualizer:
         images.append(prediction)
 
 
-        ## Occlusion map
+        ## Occlusion map sanhok
         if 'occlusion_map' in out:
             occlusion_map = out['occlusion_map'].data.cpu().repeat(1, 3, 1, 1)
             occlusion_map = F.interpolate(occlusion_map, size=source.shape[1:3]).numpy()
